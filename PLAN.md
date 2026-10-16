@@ -143,11 +143,37 @@ Monolith
 
 ## Conventions
 
+## File structure
+
+### Frontend
+[source](https://trpc.io/docs/client/nextjs/app-router-setup)
+
+.
+├── src
+│   ├── app
+│   │   ├── api
+│   │   │   └── trpc
+│   │   │       └── [trpc]
+│   │   │           └── route.ts  # <-- tRPC HTTP handler
+│   │   ├── layout.tsx            # <-- mount TRPCReactProvider
+│   │   └── page.tsx              # <-- server component
+│   ├── trpc
+│   │   ├── init.ts               # <-- tRPC server init & context
+│   │   ├── routers
+│   │   │   ├── _app.ts           # <-- main app router
+│   │   │   ├── post.ts           # <-- sub routers
+│   │   │   └── [..]
+│   │   ├── client.tsx            # <-- client hooks & provider
+│   │   ├── query-client.ts       # <-- shared QueryClient factory
+│   │   └── server.tsx            # <-- server-side caller
+│   └── [..]
+└── [..]
+
 ### File names
 
 **Directories:** kebab-case in lowercase.
 **Frontend:** components and pages in PascalCase.tsx; hooks with the `use` prefix; services, stores, types, and utils in kebab-case with a descriptive suffix (e.g. *.service.ts).
-**Backend:** follow the structure (module).router.ts, (module).controller.ts, (module).service.ts;
+**Backend:** files in camelCase.ts;
 **SQL migrations:** YYYYMMDD_description.sql.
 **Tests:** same name as the file under test + `.test.ts` or `.test.tsx` suffix; on the backend, split into unit/ and integration/ inside __tests__/.
 
