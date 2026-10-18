@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 
 export function AppHeader() {
   const router = useRouter();
-  const { title, action } = useAppHeaderState();
+  const { action } = useAppHeaderState();
 
   return (
     <div className="flex justify-between md:px-20 md:py-6 p-4">

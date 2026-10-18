@@ -28,12 +28,15 @@ Deliver a simple task management system where a user can create, list, edit, and
 
 Task CRUD
 Validations and error handling
+Display the result of the operation to the user
 
 
 ---
 
 ## Out of scope
+
 Login
+Persistence in database
 
 
 ---

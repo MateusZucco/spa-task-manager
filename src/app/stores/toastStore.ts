@@ -1,0 +1,20 @@
+import { create } from 'zustand';
+
+type ToastSeverity = 'success' | 'error' ;
+
+interface ToastState {
+  open: boolean;
+  message: string;
+  severity: ToastSeverity;
+  showToast: (message: string, severity?: ToastSeverity) => void;
+  hideToast: () => void;
+}
+
+export const useToastStore = create<ToastState>((set) => ({
+  open: false,
+  message: '',
+  severity: 'success',
+  showToast: (message, severity = 'success') => 
+    set({ open: true, message, severity }),
+  hideToast: () => set({ open: false }),
+}));

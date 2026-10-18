@@ -4,7 +4,7 @@ import { Controller, useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useAppStore } from "@/app/stores/appStore";
 import { formatDateTime } from "@/app/utils/formatDateTime";
-import { Task } from "@/trpc/schemas/tasks.schema";
+import { Task } from "@/trpc/schema/tasks.schema";
 import { createMutateHook, useUpdateTask } from "@/app/hooks/useTask";
 import { AppLoader } from "../AppLoader";
 
@@ -38,7 +38,6 @@ export function TaskForm({ task }: { task?: Task | null }) {
         id: data.id,
         title: data.title,
         description: data.description,
-        createDateTime: data.createDateTime ?? task.createDateTime,
       });
       return;
     }
