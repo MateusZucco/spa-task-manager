@@ -1,0 +1,34 @@
+import { z } from 'zod';
+import { baseProcedure, createTRPCRouter } from '../init';
+import { TaskSchema } from '../schemas/tasks.schema';
+import {getAll, getById, create, update, remove} from '../controllers/task.controller';
+
+
+export const appRouter = createTRPCRouter({
+    getAll: baseProcedure
+    .output(TaskSchema.array())
+    .query(() => getAll()),
+
+  getById: baseProcedure
+    .input(TaskSchema.pick({ id: true }))
+    .output(TaskSchema.or(z.undefined()))
+    .query(({ input }) => getById(input.id)),
+
+  create: baseProcedure
+    .input(TaskSchema.pick({ title: true, description: true }))
+    .output(TaskSchema)
+    .mutation(({ input }) => create({ ...input })),
+
+  update: baseProcedure
+    .input(TaskSchema)
+    .output(TaskSchema.or(z.undefined()))
+    .mutation(({ input }) => update(input)),
+
+  delete: baseProcedure
+    .input(TaskSchema.pick({ id: true }))
+    .output(z.boolean())
+    .mutation(({ input }) => remove(input.id)),
+});
+ 
+// export type definition of API
+export type AppRouter = typeof appRouter;
