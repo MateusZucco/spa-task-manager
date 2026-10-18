@@ -1,4 +1,4 @@
-import * as taskModel from "../models/task.model";
+import * as taskModel from "../model/task.model";
 
 type CreateInput = Parameters<typeof taskModel.create>[0];
 type UpdateArgs = Parameters<typeof taskModel.update>[0];
@@ -28,6 +28,6 @@ export async function update(
 }
 
 export async function remove(id: TaskId) {
-  const result = taskModel.delete(id);
+  const result = taskModel.deleteTask(id);
   return result;
 }

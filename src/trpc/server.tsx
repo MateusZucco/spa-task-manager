@@ -5,7 +5,7 @@ import { headers } from 'next/headers';
 import { cache } from 'react';
 import { createTRPCContext } from './init';
 import { makeQueryClient } from './query-client';
-import { appRouter } from './routes/_app';
+import { appRouter } from './route/_app';
  
 // IMPORTANT: Create a stable getter for the query client that
 //            will return the same client during the same request.

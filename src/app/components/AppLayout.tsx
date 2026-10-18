@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { AppHeader } from "@/app/components/AppHeader";
 import { AppStateSync } from "@/app/components/AppStateSync";
+import { AppToaster } from "@/app/components/AppToaster";
 import { TRPCReactProvider } from '../../trpc/client';
 
 export const metadata: Metadata = {
@@ -27,6 +28,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <AppStateSync />
+        <AppToaster />
         <AppHeader />
         <TRPCReactProvider>{children}</TRPCReactProvider>
       </body>

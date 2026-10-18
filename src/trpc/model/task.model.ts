@@ -1,10 +1,29 @@
 import TaskDatabase from "../db/fake-database";
-import { Task, TaskList } from "../schemas/tasks.schema";
+import { Task, TaskList } from "../schema/tasks.schema";
 
 const db = TaskDatabase.getInstance();
 
 function getNowIsoTime(): string {
   return new Date().toISOString();
+}
+
+function getExistingTask(id: Task["id"]): Task | undefined {
+  const existingTask = db.get(id.toString());
+
+  if (!existingTask) {
+    return undefined;
+  }
+
+  return existingTask;
+}
+
+function validateExistingTask(id: Task["id"]): Task {
+  if (!id) throw new Error(`Id is required.`);
+  const existingTask = getExistingTask(id);
+  if (!existingTask) {
+    throw new Error(`Task not found in the database.`);
+  }
+  return existingTask;
 }
 
 /**
@@ -37,8 +56,12 @@ export function getAll(): TaskList {
  * READ: Finds a specific task by Id
  */
 export function getById(id: Task["id"]): Task | undefined {
-  if (id) return db.get(id.toString());
-  else return undefined;
+  try {
+    validateExistingTask(id);
+    return db.get(id.toString());
+  } catch (error) {
+    throw error;
+  }
 }
 
 /**
@@ -51,12 +74,8 @@ export function update({
   id: Task["id"];
   form: Partial<Task>;
 }): Task | undefined {
-  if (id) {
-    const existingTask = db.get(id.toString());
-
-    if (!existingTask) {
-      throw new Error(`Task with ID ${id} not found in the database.`);
-    }
+  try {
+    const existingTask = validateExistingTask(id);
 
     const updatedTask: Task = {
       ...existingTask,
@@ -66,15 +85,20 @@ export function update({
 
     db.set(id.toString(), updatedTask);
     return updatedTask;
-  } else return undefined;
+  } catch (error) {
+    throw error;
+  }
 }
 
 /**
  * DELETE: Removes the task from the Map
  */
-function deleteTask(id: Task["id"]): boolean {
-  if (id) return db.remove(id.toString());
-  else return false;
+export function deleteTask(id: Task["id"]): boolean {
+  try {
+    console.log('deleteTask', id);
+    validateExistingTask(id);
+    return db.remove(id.toString());
+  } catch (error) {
+    throw error;
+  }
 }
-
-export { deleteTask as delete };

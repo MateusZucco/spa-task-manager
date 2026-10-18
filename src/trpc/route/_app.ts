@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { baseProcedure, createTRPCRouter } from '../init';
-import { TaskSchema } from '../schemas/tasks.schema';
-import {getAll, getById, create, update, remove} from '../controllers/task.controller';
+import { TaskSchema } from '../schema/tasks.schema';
+import {getAll, getById, create, update, remove} from '../controller/task.controller';
 
 
 export const appRouter = createTRPCRouter({

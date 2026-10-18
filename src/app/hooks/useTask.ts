@@ -7,7 +7,8 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useToastStore } from "../stores/toastStore";
 
 async function invalidateQueries(
   queryClient: QueryClient,
@@ -17,6 +18,22 @@ async function invalidateQueries(
     queryClient.invalidateQueries(trpc.getAll.queryFilter()),
     queryClient.invalidateQueries(trpc.getById.queryFilter()),
   ]);
+}
+
+async function onSuccessMutation({
+  message,
+  queryClient,
+  router,
+  trpc,
+}: {
+  message: string;
+  queryClient: QueryClient;
+  router: ReturnType<typeof useRouter>;
+  trpc: ReturnType<typeof useTRPC>;
+}) {
+  await invalidateQueries(queryClient, trpc);
+  router.push("/");
+  useToastStore.getState().showToast(message, "success");
 }
 
 export function useGetAllTasks() {
@@ -31,17 +48,21 @@ export function useGetTaskById(id: string) {
 
 export function createMutateHook() {
   const trpc = useTRPC();
-  const router = useRouter();
   const queryClient = useQueryClient();
+  const router = useRouter();
 
   return useMutation(
     trpc.create.mutationOptions({
       onSuccess: async () => {
-        await invalidateQueries(queryClient, trpc);
-        router.push("/");
+        await onSuccessMutation({
+          message: "Task created successfully",
+          queryClient,
+          router,
+          trpc,
+        });
       },
       onError: (error) => {
-        console.error(error);
+        useToastStore.getState().showToast(error.message, "error");
       },
     }),
   );
@@ -49,17 +70,21 @@ export function createMutateHook() {
 
 export function useUpdateTask() {
   const trpc = useTRPC();
-  const router = useRouter();
   const queryClient = useQueryClient();
+  const router = useRouter();
 
   return useMutation(
     trpc.update.mutationOptions({
       onSuccess: async () => {
-        await invalidateQueries(queryClient, trpc);
-        router.push("/");
+        await onSuccessMutation({
+          message: "Task updated successfully",
+          queryClient,
+          router,
+          trpc,
+        });
       },
       onError: (error) => {
-        console.error(error);
+        useToastStore.getState().showToast(error.message, "error");
       },
     }),
   );
@@ -67,32 +92,23 @@ export function useUpdateTask() {
 
 export function useDeleteTask({ closeDialog }: { closeDialog: () => void }) {
   const trpc = useTRPC();
-  const router = useRouter();
   const queryClient = useQueryClient();
+  const router = useRouter();
+
   return useMutation(
     trpc.delete.mutationOptions({
       onSuccess: async () => {
-        await invalidateQueries(queryClient, trpc);
-        router.refresh();
+        await onSuccessMutation({
+          message: "Task deleted successfully",
+          queryClient,
+          router,
+          trpc,
+        });
         closeDialog();
       },
       onError: (error) => {
-        console.error(error);
+        useToastStore.getState().showToast(error.message, "error");
       },
     }),
   );
 }
-
-// export function deleteMutateHook({ showToast }: { showToast: showToastType }) {
-//   const { router, utils } = getInstances();
-//   return trpc.delete.useMutation({
-//     onSuccess: async () => {
-//       await refreshCache(router, utils);
-//       showToast("Task removed!", "success");
-//     },
-//     onError: (error) => {
-//       const message = getTRPCErrorMessage(error);
-//       showToast(message, "error");
-//     },
-//   });
-// }

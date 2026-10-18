@@ -1,4 +1,4 @@
-import { Task, TaskList } from "../schemas/tasks.schema";
+import { Task, TaskList } from "../schema/tasks.schema";
 
 /**
  *  Singleton Class to manage in-memory task storage

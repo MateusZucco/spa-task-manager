@@ -4,7 +4,7 @@ export const TaskSchema = z.object({
   id: z.string(),
   title: z.string().trim().min(1, "Title is required"),
   description: z.string().optional(),
-  createDateTime: z.string(),
+  createDateTime: z.string().optional(),
   updateDateTime: z.string().optional(),
 });
 
