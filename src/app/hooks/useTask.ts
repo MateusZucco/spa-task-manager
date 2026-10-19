@@ -1,8 +1,10 @@
 "use client";
 
 import { useTRPC } from "@/trpc/client";
+import { TASK_PAGE_SIZE } from "@/trpc/schema/tasks.schema";
 import {
   QueryClient,
+  useInfiniteQuery,
   useMutation,
   useQuery,
   useQueryClient,
@@ -15,7 +17,7 @@ async function invalidateQueries(
   trpc: ReturnType<typeof useTRPC>,
 ) {
   await Promise.all([
-    queryClient.invalidateQueries(trpc.getAll.queryFilter()),
+    queryClient.invalidateQueries(trpc.getAll.infiniteQueryFilter()),
     queryClient.invalidateQueries(trpc.getById.queryFilter()),
   ]);
 }
@@ -38,7 +40,15 @@ async function onSuccessMutation({
 
 export function useGetAllTasks() {
   const trpc = useTRPC();
-  return useQuery(trpc.getAll.queryOptions());
+  return useInfiniteQuery(
+    trpc.getAll.infiniteQueryOptions(
+      { limit: TASK_PAGE_SIZE },
+      {
+        initialCursor: null,
+        getNextPageParam: (lastPage) => lastPage.nextCursor,
+      },
+    ),
+  );
 }
 
 export function useGetTaskById(id: string) {

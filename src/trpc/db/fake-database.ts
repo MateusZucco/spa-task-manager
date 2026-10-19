@@ -1,14 +1,35 @@
 import { Task, TaskList } from "../schema/tasks.schema";
 
+const SEEDED_TASK_COUNT = 100;
+
+function seedTasks(): Map<string, Task> {
+  const tasks = new Map<string, Task>();
+  const now = Date.now();
+
+  for (let index = 1; index <= SEEDED_TASK_COUNT; index += 1) {
+    const id = String(index);
+    const createdAt = new Date(now - (SEEDED_TASK_COUNT - index) * 3_600_000);
+
+    tasks.set(id, {
+      id,
+      title: `Task ${index}`,
+      description: `Description ${index}`,
+      createDateTime: createdAt.toISOString(),
+      updateDateTime:
+        index % 3 === 0
+          ? new Date(createdAt.getTime() + 1_800_000).toISOString()
+          : undefined,
+    });
+  }
+
+  return tasks;
+}
+
 /**
  *  Singleton Class to manage in-memory task storage
  */
 class TaskDatabase {
-  private tasks: Map<string, Task> = new Map( [
-    ["1", { id: "1", title: "Task 1", description: "Description 1", createDateTime: new Date().toISOString(), updateDateTime: new Date().toISOString() }],
-    ["2", { id: "2", title: "Task 2", description: "Description 2", createDateTime: new Date().toISOString(), updateDateTime: new Date().toISOString() }],
-    ["3", { id: "3", title: "Task 3", description: "Description 3", createDateTime: new Date().toISOString(), updateDateTime: new Date().toISOString() }],
-  ]);
+  private tasks: Map<string, Task> = seedTasks();
 
   private constructor() {}
 
@@ -16,7 +37,7 @@ class TaskDatabase {
    * Singleton method
    */
   public static getInstance(): TaskDatabase {
-    const globalKey = "_db_instance";
+    const globalKey = "_task_db";
     const globalForDb = globalThis as unknown as {
       [key: string]: TaskDatabase;
     };

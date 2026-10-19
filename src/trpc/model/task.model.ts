@@ -1,5 +1,10 @@
 import TaskDatabase from "../db/fake-database";
-import { Task, TaskList } from "../schema/tasks.schema";
+import {
+  TASK_PAGE_SIZE,
+  Task,
+  TaskPage,
+  TaskPageInput,
+} from "../schema/tasks.schema";
 
 const db = TaskDatabase.getInstance();
 
@@ -46,10 +51,23 @@ export function create(data: {
 }
 
 /**
- * READ: Lists all tasks
+ * READ: Lists tasks one page at a time. The cursor is the id of the last
+ * task already shown; the next page starts after it.
  */
-export function getAll(): TaskList {
-  return db.values();
+export function getAll(input?: TaskPageInput): TaskPage {
+  const limit = input?.limit ?? TASK_PAGE_SIZE;
+  const tasks = db.values();
+  const cursorIndex = input?.cursor
+    ? tasks.findIndex((task) => task.id === input.cursor)
+    : -1;
+  const start = cursorIndex >= 0 ? cursorIndex + 1 : 0;
+  const items = tasks.slice(start, start + limit);
+  const hasMore = start + limit < tasks.length;
+
+  return {
+    items,
+    nextCursor: hasMore ? (items.at(-1)?.id ?? null) : null,
+  };
 }
 
 /**

@@ -1,13 +1,14 @@
 import { z } from 'zod';
 import { baseProcedure, createTRPCRouter } from '../init';
-import { TaskSchema } from '../schema/tasks.schema';
+import { TaskPageInputSchema, TaskPageSchema, TaskSchema } from '../schema/tasks.schema';
 import {getAll, getById, create, update, remove} from '../controller/task.controller';
 
 
 export const appRouter = createTRPCRouter({
     getAll: baseProcedure
-    .output(TaskSchema.array())
-    .query(() => getAll()),
+    .input(TaskPageInputSchema)
+    .output(TaskPageSchema)
+    .query(({ input }) => getAll(input)),
 
   getById: baseProcedure
     .input(TaskSchema.pick({ id: true }))

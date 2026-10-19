@@ -4,8 +4,8 @@ type CreateInput = Parameters<typeof taskModel.create>[0];
 type UpdateArgs = Parameters<typeof taskModel.update>[0];
 type TaskId = Parameters<typeof taskModel.getById>[0];
 
-export function getAll() {
-  return taskModel.getAll();
+export function getAll(input?: Parameters<typeof taskModel.getAll>[0]) {
+  return taskModel.getAll(input);
 }
 
 export function getById(id: TaskId) {
