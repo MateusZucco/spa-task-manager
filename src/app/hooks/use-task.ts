@@ -53,10 +53,10 @@ export function useGetAllTasks() {
 
 export function useGetTaskById(id: string) {
   const trpc = useTRPC();
-  return useQuery(trpc.getById.queryOptions({ id }));
+  return useQuery(trpc.getById.queryOptions({ id }, { enabled: id.length > 0 }));
 }
 
-export function createMutateHook() {
+export function useCreateTask() {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
   const router = useRouter();

@@ -2,7 +2,7 @@ import { initTRPC } from "@trpc/server";
 import superjson from "superjson";
 import { createErrorMiddleware } from "./middleware/middleware";
 
-export async function createTRPCContext(_opts: { headers: Headers }) {
+export async function createTRPCContext() {
   return {};
 }
 

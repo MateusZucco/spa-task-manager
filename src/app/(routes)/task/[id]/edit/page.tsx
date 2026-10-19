@@ -6,9 +6,9 @@ import { useParams } from "next/navigation";
 
 export default function EditTaskPage() {
   const params = useParams<{ id: string }>();
-  if (!params.id) return null;
+  const task = useGetTaskById(params.id ?? "");
 
-  const task = useGetTaskById(params.id);
+  if (!params.id) return null;
 
   return (
     <main className="mx-auto max-w-3xl px-6 py-10">

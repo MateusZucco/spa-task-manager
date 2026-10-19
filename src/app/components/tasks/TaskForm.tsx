@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useAppStore } from "@/app/stores/app.store";
 import { formatDateTime } from "@/app/utils/format-date-time";
 import { Task } from "@/trpc/schema/tasks.schema";
-import { createMutateHook, useUpdateTask } from "@/app/hooks/use-task";
+import { useCreateTask, useUpdateTask } from "@/app/hooks/use-task";
 import { AppLoader } from "../AppLoader";
 
 const fieldClassName =
@@ -14,7 +14,7 @@ const fieldClassName =
 export function TaskForm({ task }: { task?: Task | null }) {
   const router = useRouter();
   const appState = useAppStore().state;
-  const createTask = createMutateHook();
+  const createTask = useCreateTask();
   const updateTask = useUpdateTask();
   const { control, handleSubmit } = useForm<{
     id: string;

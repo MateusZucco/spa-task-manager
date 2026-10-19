@@ -39,9 +39,9 @@ export function useAppHeaderState(): {
           action: {
             show: false,
           },
-        }
+        };
     }
-  }, [appState]);
+  }, [appState, router]);
 
   return { ...appStateHeader };
 }
