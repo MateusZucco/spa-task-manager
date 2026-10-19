@@ -10,7 +10,7 @@ export type Task = {
   id: string;
   title: string;
   description?: string;
-  createDateTime: string;
+  createDateTime?: string;
   updateDateTime?: string;
 };
 

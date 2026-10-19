@@ -1,18 +1,14 @@
-"use client";
-import { AppLoader } from "@/app/components/AppLoader";
-import { TasksList } from "@/app/components/tasks/TaskList";
-import { useQuery } from '@tanstack/react-query';
-import { useTRPC } from '../../trpc/client';
-import { useGetAllTasks } from "../hooks/useTask";
+import { TaskListPage } from "@/app/components/tasks/TaskListPage";
+import { getQueryClient, trpc } from "@/trpc/server";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
-export default function TaskListPage() {
-
-  const taskList = useGetAllTasks();
+export default async function Page() {
+  const queryClient = getQueryClient();
+  await queryClient.prefetchQuery(trpc.getAll.queryOptions());
 
   return (
-    <main className="mx-auto max-w-5xl px-6 py-10">
-      <h1 className="text-2xl font-semibold tracking-tight">Tasks</h1>
-      {taskList.isPending ? <AppLoader /> : <TasksList tasks={taskList.data ?? []} />}
-    </main>
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <TaskListPage />
+    </HydrationBoundary>
   );
 }
