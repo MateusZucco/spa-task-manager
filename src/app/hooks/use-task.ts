@@ -10,7 +10,7 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { useToastStore } from "../stores/toastStore";
+import { useToastStore } from "../stores/toast.store";
 
 async function invalidateQueries(
   queryClient: QueryClient,

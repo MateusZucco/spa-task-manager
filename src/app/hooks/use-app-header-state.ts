@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { useAppStore } from "../stores/appStore";
+import { useAppStore } from "../stores/app.store";
 import { useRouter } from "next/navigation";
 
 export function useAppHeaderState(): {

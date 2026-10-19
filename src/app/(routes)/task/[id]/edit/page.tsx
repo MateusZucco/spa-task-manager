@@ -1,9 +1,7 @@
 "use client";
 import { AppLoader } from "@/app/components/AppLoader";
 import { TaskForm } from "@/app/components/tasks/TaskForm";
-import { useGetTaskById } from "@/app/hooks/useTask";
-import { useTRPC } from "@/trpc/client";
-import { useQuery } from "@tanstack/react-query";
+import { useGetTaskById } from "@/app/hooks/use-task";
 import { useParams } from "next/navigation";
 
 export default function EditTaskPage() {

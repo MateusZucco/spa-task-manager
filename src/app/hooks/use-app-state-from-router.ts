@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { useAppStore, type AppState } from "../stores/appStore";
+import { useAppStore, type AppState } from "../stores/app.store";
 
 function appStateFromPathname(pathname: string): AppState {
   if (pathname === "/task/new") return "new";

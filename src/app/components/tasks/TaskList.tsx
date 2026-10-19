@@ -1,7 +1,7 @@
 "use client";
 
-import { useDeleteTask } from "@/app/hooks/useTask";
-import { formatDateTime } from "@/app/utils/formatDateTime";
+import { useDeleteTask } from "@/app/hooks/use-task";
+import { formatDateTime } from "@/app/utils/format-date-time";
 import Link from "next/link";
 import { useRef, useState } from "react";
 import { AppLoader } from "../AppLoader";

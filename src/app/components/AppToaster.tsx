@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useToastStore } from "@/app/stores/toastStore";
+import { useToastStore } from "@/app/stores/toast.store";
 
 const AUTO_HIDE_MS = 5000;
 

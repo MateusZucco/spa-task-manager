@@ -2,10 +2,10 @@
 
 import { Controller, useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import { useAppStore } from "@/app/stores/appStore";
-import { formatDateTime } from "@/app/utils/formatDateTime";
+import { useAppStore } from "@/app/stores/app.store";
+import { formatDateTime } from "@/app/utils/format-date-time";
 import { Task } from "@/trpc/schema/tasks.schema";
-import { createMutateHook, useUpdateTask } from "@/app/hooks/useTask";
+import { createMutateHook, useUpdateTask } from "@/app/hooks/use-task";
 import { AppLoader } from "../AppLoader";
 
 const fieldClassName =

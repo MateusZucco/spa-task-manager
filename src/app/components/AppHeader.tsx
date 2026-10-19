@@ -1,6 +1,6 @@
 "use client";
 
-import { useAppHeaderState } from "../hooks/useAppHeaderState";
+import { useAppHeaderState } from "../hooks/use-app-header-state";
 import { useRouter } from "next/navigation";
 
 export function AppHeader() {

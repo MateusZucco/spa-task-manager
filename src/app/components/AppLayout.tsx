@@ -1,15 +1,9 @@
 import "../globals.css";
-import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { AppHeader } from "@/app/components/AppHeader";
 import { AppStateSync } from "@/app/components/AppStateSync";
 import { AppToaster } from "@/app/components/AppToaster";
 import { TRPCReactProvider } from '../../trpc/client';
-
-export const metadata: Metadata = {
-  title: "TO DO LIST",
-  description: "A simple task management app",
-};
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

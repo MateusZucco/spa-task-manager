@@ -2,7 +2,7 @@
 
 import { AppLoader } from "@/app/components/AppLoader";
 import { TasksList } from "@/app/components/tasks/TaskList";
-import { useGetAllTasks } from "@/app/hooks/useTask";
+import { useGetAllTasks } from "@/app/hooks/use-task";
 import { useEffect, useRef } from "react";
 
 export function TaskListPage() {
