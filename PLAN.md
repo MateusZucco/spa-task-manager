@@ -75,37 +75,30 @@ Document all important rules.
 
 ## Functional Requirements
 
-RF001 - The system must list all existing tasks, showing each task’s name, description, and creation date.
-RF002 - The system must allow a Simple user to create a task by providing a title (name) and a description.
-RF003 - The system must set the creation date automatically when a task is created.
-RF004 - The system must prevent creating a task without a title and must reject incomplete records (missing name and/or description).
-RF005 - The system must allow a Simple user to edit an existing task’s name and description, and must prevent saving incomplete records.
-RF006 - The system must allow a Simple user to delete a task directly from the task list.
-RF007 - The system must show visual feedback after create, edit, and delete actions (success and error messages).
-RF008 - The system must handle and surface validation and operation errors so the user understands why an action failed.
+FR001 - The system must list all existing tasks, showing each task’s name, description, and creation date.
+FR002 - The system must allow a Simple user to create a task by providing a title (name) and a description.
+FR003 - The system must set the creation date automatically when a task is created.
+FR004 - The system must prevent creating a task without a title and must reject incomplete records (missing name).
+FR005 - The system must allow a Simple user to edit an existing task’s name and description, and must prevent saving incomplete records.
+FR006 - The system must allow a Simple user to delete a task directly from the task list.
+FR007 - The system must show visual feedback after create, edit, and delete actions (success and error messages).
+FR008 - The system must handle and surface validation and operation errors so the user understands why an action failed.
 
 ## Non-Functional Requirements
 
 Define requirements such as:
 
-RNF001 - Use Server-Side Rendering (SSR) to pre-load the task list
-RNF002 - Display tasks in a simple layout
-RNF003 - Use functional components and hooks to manage form state
-RNF004 - Implement form validation
-RNF005 - Consider user experience when handling loading, success, and failure states
-RNF006 - Implement incremental loading of tasks as the user scrolls the page.
+NFR001 - Use Server-Side Rendering (SSR) to pre-load the task list
+NFR002 - Display tasks in a simple layout
+NFR003 - Use functional components and hooks to manage form state
+NFR004 - Implement form validation
+NFR005 - Consider user experience when handling loading, success, and failure states
+NFR006 - Implement incremental loading of tasks as the user scrolls the page.
 ---
 
 # Phase 5 — Solution Architecture
 
-## Overview
-
-## [Diagram]
-
 ## Software architecture
-
-### Classification
-> Security and fault tolerance
 
 ### Architecture
 > Monolith
@@ -120,21 +113,26 @@ Document the entire stack.
 ### Frontend
 
 NextJS
-  - Why was it chosen? Market leader. Team familiarity. Compatibility with SPAs.
-  - What alternatives existed? Vue, Angular, JQuery
-  - What are the trade-offs?
+  - Why was it chosen? Market leader. Team familiarity. Compatibility with SPAs. Built-in SSR for the task list (NFR001) and an App Router that hosts both the UI and the API in one monolith.
+  - What alternatives existed? Vue, Angular, jQuery. Also Remix and a plain React SPA (Vite) if SSR were dropped.
+  - What are the trade-offs? Heavier than a static SPA for a small CRUD app. App Router and server/client boundaries add complexity. Tied to the React and Vercel ecosystem. SSR helps the first load, then client navigation behaves like an SPA.
+
+Zustand
+  - Why was it chosen? Small API for client-only UI state. No provider.
+  - What alternatives existed? Redux Toolkit, Jotai.
+  - What are the trade-offs?  There is no enforced action structure, so a larger app can hide updates in the global store.
 
 ### Backend
 
 Node
-  - Why was it chosen? Fully unified JavaScript ecosystem. Team familiarity. Agile development.
+  - Why was it chosen? Fully unified JavaScript ecosystem. Team familiarity. Agile development. Same language and types as the Next.js frontend, so one runtime can serve pages and the API.
   - What alternatives existed? Python, Go, Java, .NET
-  - What are the trade-offs? Lower performance on CPU-intensive tasks. Complexity with concurrent work (single-threaded)
+  - What are the trade-offs? Lower performance on CPU-intensive tasks. Complexity with concurrent work (single-threaded). Fine for this app: task CRUD is I/O-bound and the data stays in memory.
 
 tRPC
-  - Why was it chosen? Fully unified JavaScript ecosystem. Team familiarity. Agile development.
-  - What alternatives existed? Python, Go, Java, .NET
-  - What are the trade-offs? Lower performance on CPU-intensive tasks. Complexity with concurrent work (single-threaded)
+  - Why was it chosen? End-to-end TypeScript between the Next.js client and the server procedures. No separate API contract to keep in sync. Zod schemas validate inputs once and the client sees the same types. Fits the monolith and the team’s JavaScript stack.
+  - What alternatives existed? REST (Next.js route handlers or OpenAPI), GraphQL, gRPC
+  - What are the trade-offs? Only TypeScript clients get the typed API; a public or multi-language API would need REST or OpenAPI instead. Client and server must ship together, so this is a poor fit for external consumers. Procedure calls are less familiar than HTTP resources, and caching depends on React Query rather than standard HTTP cache headers.
 
 ---
 
@@ -176,9 +174,7 @@ Monolith
 
 **Directories:** kebab-case in lowercase.
 **Frontend:** components and pages in PascalCase.tsx; hooks with the `use` prefix; services, stores, types, and utils in kebab-case with a descriptive suffix (e.g. *.service.ts).
-**Backend:** files in camelCase.ts;
-**SQL migrations:** YYYYMMDD_description.sql.
-**Tests:** same name as the file under test + `.test.ts` or `.test.tsx` suffix; on the backend, split into unit/ and integration/ inside __tests__/.
+**Backend:** files in kebab-case.ts;
 
 ### Variable names
 
@@ -192,17 +188,6 @@ Monolith
 ### API structure
 
 **Base:** RPC
-**Flow:** Router → Controller → Service -> Model.
+**Flow:** TRPC Router → Controller -> Model.
 
 ---
-
-# Phase 8 — Quality
-
-Define before development.
-
-## Testing Strategy
-
-Unit:
-Integration:
-E2E:
-Performance:
