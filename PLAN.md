@@ -136,7 +136,7 @@ tRPC
 
 ---
 
-# Phase 7 — Project Architecture
+# Phase 6 — Project Architecture
 
 Monolith
 
@@ -148,7 +148,7 @@ Monolith
 
 ### Frontend
 [source](https://trpc.io/docs/client/nextjs/app-router-setup)
-
+```
 .
 ├── src
 │   ├── app
@@ -169,6 +169,7 @@ Monolith
 │   │   └── server.tsx            # <-- server-side caller
 │   └── [..]
 └── [..]
+```
 
 ### File names
 
