@@ -137,16 +137,12 @@ tRPC
 ---
 
 # Phase 6 — Project Architecture
-
+## Architecture
 Monolith
 
 ---
 
-## Conventions
-
 ## File structure
-
-### Frontend
 [source](https://trpc.io/docs/client/nextjs/app-router-setup)
 ```
 .
@@ -185,8 +181,6 @@ Monolith
 **Booleans:** prefixes is, has, can (e.g. isLoading, hasActiveGoal, canEditUser).
 **Handlers and callbacks:** handle for internal functions (e.g. handleSubmit); on for props (e.g. onFilterChange).
 **API JSON:** camelCase in request and response (e.g. { startDate, endDate }).
-
-### API structure
 
 **Base:** RPC
 **Flow:** TRPC Router → Controller -> Model.
